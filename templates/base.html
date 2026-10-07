@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}M-Cart{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="container nav-container">
+
+            <a href="/" class="brand">
+                <span class="brand-mark">M</span>
+                <span class="brand-name">M-Cart</span>
+            </a>
+
+            <nav class="main-nav">
+                <a href="#">Shop</a>
+                <a href="#">Categories</a>
+                <a href="#">About</a>
+            </nav>
+
+            <div class="nav-actions">
+
+    <a href="#" class="nav-cart">
+        Cart
+        <span class="cart-count">0</span>
+    </a>
+
+    {% if user.is_authenticated %}
+
+        <span class="nav-user">
+            {{ user.username }}
+        </span>
+
+        <a
+            href="{% url 'logout' %}"
+            class="nav-login"
+        >
+            Logout
+        </a>
+
+    {% else %}
+
+        <a
+            href="{% url 'login' %}"
+            class="nav-login"
+        >
+            Sign in
+        </a>
+
+    {% endif %}
+
+</div>
+
+        </div>
+    </header>
+
+
+   
+        <main>
+
+    {% if messages %}
+        <div class="global-messages">
+
+            {% for message in messages %}
+
+                <div class="global-message {{ message.tags }}">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+
+</main>
+     
+
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+
+            <div>
+                <a href="/" class="brand">
+                    <span class="brand-mark">M</span>
+                    <span class="brand-name">M-Cart</span>
+                </a>
+
+                <p class="footer-description">
+                    A modern shopping experience built for simplicity.
+                </p>
+            </div>
+
+            <p class="footer-copy">
+                © {% now "Y" %} M-Cart. All rights reserved.
+            </p>
+
+        </div>
+    </footer>
+
+</body>
+</html>

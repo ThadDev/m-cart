@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Shop — M-Cart{% endblock %}
+
+{% block content %}
+
+<section class="products-section">
+    <div class="container">
+
+        <h1>Shop</h1>
+
+        {% if products %}
+
+            <div class="products-grid">
+
+                {% for product in products %}
+
+                    <article class="product-card">
+
+                        {% if product.image %}
+                            <img
+                                src="{{ product.image.url }}"
+                                alt="{{ product.name }}"
+                            >
+                        {% endif %}
+
+                        <div class="product-card-content">
+
+                            <h2>{{ product.name }}</h2>
+
+                            <p>
+                                ₦{{ product.price|floatformat:2 }}
+                            </p>
+
+                            <a href="{% url 'product_detail' product.slug %}">
+                                View product
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p>No products available yet.</p>
+
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
