@@ -83,6 +83,10 @@ img {
    ========================================= */
 
 .site-header {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
     height: 68px;
     border-bottom: 1px solid var(--border);
     background: rgba(8, 8, 8, 0.96);
