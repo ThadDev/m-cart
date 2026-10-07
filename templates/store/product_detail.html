@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}{{ product.name }} — M-Cart{% endblock %}
@@ -5,56 +6,243 @@
 {% block content %}
 
 <section class="product-detail-section">
+
     <div class="container">
 
+        <!-- BREADCRUMB -->
+        <nav class="product-breadcrumb" aria-label="Breadcrumb">
+
+            <a href="/">
+                Shop
+            </a>
+
+            <span>/</span>
+
+            <span>
+                {{ product.name }}
+            </span>
+
+        </nav>
+
+
+        <!-- PRODUCT -->
         <div class="product-detail">
 
-            <div class="product-detail-image">
+            <!-- =====================================
+                 PRODUCT IMAGE
+                 ===================================== -->
 
-                {% if product.image %}
-                    <img
-                        src="{{ product.image.url }}"
-                        alt="{{ product.name }}"
-                    >
-                {% else %}
-                    <div>
-                        No image available
-                    </div>
-                {% endif %}
+            <div class="product-detail-visual">
+
+                <div class="product-detail-image">
+
+                    {% if product.image %}
+
+                        <img
+                            src="{{ product.image.url }}"
+                            alt="{{ product.name }}"
+                        >
+
+                    {% else %}
+
+                        <div class="product-image-empty">
+                            No image available
+                        </div>
+
+                    {% endif %}
+
+                </div>
 
             </div>
 
+
+            <!-- =====================================
+                 PRODUCT INFORMATION
+                 ===================================== -->
+
             <div class="product-detail-info">
 
-                <h1>{{ product.name }}</h1>
-
-                <p class="product-price">
-                    ₦{{ product.price|floatformat:2 }}
+                <p class="product-detail-eyebrow">
+                    M-CART COLLECTION
                 </p>
 
-                <p class="product-description">
+
+                <h1>
+                    {{ product.name }}
+                </h1>
+
+
+                <!-- PRICE -->
+                <div class="product-detail-price">
+
+                    <span>
+                        ₦{{ product.price|floatformat:2 }}
+                    </span>
+
+                </div>
+
+
+                <!-- STOCK -->
+                <div class="product-stock">
+
+                    {% if product.stock > 0 %}
+
+                        <span class="stock-indicator"></span>
+
+                        <span>
+                            In stock
+                        </span>
+
+                        <span class="stock-quantity">
+                            {{ product.stock }} available
+                        </span>
+
+                    {% else %}
+
+                        <span class="stock-indicator out"></span>
+
+                        <span>
+                            Out of stock
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="product-detail-divider"></div>
+
+
+                <!-- DESCRIPTION -->
+                <div class="product-description">
+
+                    <p class="detail-label">
+                        DESCRIPTION
+                    </p>
+
+                    <p>
+                        {{ product.description }}
+                    </p>
+
+                </div>
+
+
+                <!-- PURCHASE AREA -->
+                {% if product.stock > 0 %}
+
+                    <div class="product-purchase">
+
+                        <a
+                            href="{% url 'add_to_cart' product.slug %}"
+                            class="product-add-button"
+                        >
+                            <span>
+                                Add to cart
+                            </span>
+
+                            <span>
+                                →
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                {% else %}
+
+                    <button
+                        type="button"
+                        class="product-add-button disabled"
+                        disabled
+                    >
+                        Out of stock
+                    </button>
+
+                {% endif %}
+
+
+                <!-- PRODUCT DETAILS -->
+                <div class="product-meta">
+
+                    <div class="product-meta-row">
+
+                        <span>
+                            Availability
+                        </span>
+
+                        <span>
+                            {% if product.stock > 0 %}
+                                Available
+                            {% else %}
+                                Sold out
+                            {% endif %}
+                        </span>
+
+                    </div>
+
+
+                    <div class="product-meta-row">
+
+                        <span>
+                            SKU
+                        </span>
+
+                        <span>
+                            MC-{{ product.id|stringformat:"05d" }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="product-meta-row">
+
+                        <span>
+                            Shipping
+                        </span>
+
+                        <span>
+                            Calculated at checkout
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================
+             LOWER PRODUCT INFORMATION
+             ===================================== -->
+
+        <div class="product-information">
+
+            <div class="product-information-heading">
+
+                <p class="section-eyebrow">
+                    PRODUCT INFORMATION
+                </p>
+
+                <h2>
+                    More about this product
+                </h2>
+
+            </div>
+
+            <div class="product-information-copy">
+
+                <p>
                     {{ product.description }}
                 </p>
-
-                {% if product.stock > 0 %}
-                    <p>
-                        {{ product.stock }} available
-                    </p>
-
-                    <button type="button">
-                        Add to cart
-                    </button>
-                {% else %}
-                    <p>
-                        Out of stock
-                    </p>
-                {% endif %}
 
             </div>
 
         </div>
 
     </div>
+
 </section>
 
 {% endblock %}

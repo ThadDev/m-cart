@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate
 from django.shortcuts import redirect, render
 
 from .models import User
+from store.models import Cart
 
 
 def register(request):
@@ -76,7 +77,7 @@ def register(request):
             phone_number=phone_number,
             password=password,
         )
-
+        Cart.objects.create(user=user)
         # Automatically log user in
         login(request, user)
 

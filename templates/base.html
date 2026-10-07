@@ -24,17 +24,23 @@
             </a>
 
             <nav class="main-nav">
-                <a href="#">Shop</a>
+                <a href="/">Shop</a>
                 <a href="#">Categories</a>
                 <a href="#">About</a>
             </nav>
 
             <div class="nav-actions">
 
-    <a href="#" class="nav-cart">
-        Cart
-        <span class="cart-count">0</span>
-    </a>
+   <a href="{% url 'cart' %}" class="nav-cart">
+    Cart
+    <span class="cart-count">
+        {% if user.is_authenticated %}
+            {{ user.cart.item_count|default:"0" }}
+        {% else %}
+            0
+        {% endif %}
+    </span>
+</a>
 
     {% if user.is_authenticated %}
 

@@ -1,0 +1,270 @@
+
+{% extends "base.html" %}
+
+{% block title %}Your Cart — M-Cart{% endblock %}
+
+{% block content %}
+
+<section class="cart-section">
+    <div class="container">
+
+        <!-- CART HEADER -->
+        <div class="cart-header">
+            <div>
+                <p class="section-eyebrow">YOUR SHOPPING CART</p>
+                <h1>Your Cart</h1>
+            </div>
+
+            <a href="/" class="continue-shopping">
+                Continue shopping →
+            </a>
+        </div>
+
+
+        {% if items %}
+
+            <!-- CART LAYOUT -->
+            <div class="cart-layout">
+
+                <!-- CART ITEMS -->
+                <div class="cart-items">
+
+                    {% for item in items %}
+
+                        <article class="cart-item">
+
+                            <!-- PRODUCT IMAGE -->
+                            <div class="cart-item-image">
+
+                                {% if item.product.image %}
+
+                                    <img
+                                        src="{{ item.product.image.url }}"
+                                        alt="{{ item.product.name }}"
+                                    >
+
+                                {% else %}
+
+                                    <div class="image-placeholder">
+                                        No image
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <!-- PRODUCT INFORMATION -->
+                            <div class="cart-item-info">
+
+                                <!-- PRODUCT DETAILS -->
+                                <div class="cart-item-details">
+
+                                    <h2>
+                                        {{ item.product.name }}
+                                    </h2>
+
+                                    <p class="cart-item-price">
+                                        ₦{{ item.product.price|floatformat:2 }}
+                                    </p>
+
+                                </div>
+
+
+                                <!-- CART ITEM ACTIONS -->
+                                <div class="cart-item-actions">
+
+                                    <!-- QUANTITY CONTROL -->
+                                    <div class="quantity-control">
+
+                                        <!-- DECREASE -->
+                                        <form
+                                            method="POST"
+                                            action="{% url 'update_cart_item' item.id %}"
+                                        >
+                                            {% csrf_token %}
+
+                                            <input
+                                                type="hidden"
+                                                name="action"
+                                                value="decrease"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="quantity-button"
+                                                aria-label="Decrease quantity"
+                                            >
+                                                −
+                                            </button>
+                                        </form>
+
+
+                                        <!-- CURRENT QUANTITY -->
+                                        <span class="quantity-value">
+                                            {{ item.quantity }}
+                                        </span>
+
+
+                                        <!-- INCREASE -->
+                                        <form
+                                            method="POST"
+                                            action="{% url 'update_cart_item' item.id %}"
+                                        >
+                                            {% csrf_token %}
+
+                                            <input
+                                                type="hidden"
+                                                name="action"
+                                                value="increase"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="quantity-button"
+                                                aria-label="Increase quantity"
+                                            >
+                                                +
+                                            </button>
+                                        </form>
+
+                                    </div>
+
+
+                                    <!-- REMOVE ITEM -->
+                                    <form
+                                        method="POST"
+                                        action="{% url 'update_cart_item' item.id %}"
+                                    >
+                                        {% csrf_token %}
+
+                                        <input
+                                            type="hidden"
+                                            name="action"
+                                            value="remove"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="remove-item"
+                                        >
+                                            Remove
+                                        </button>
+
+                                    </form>
+
+
+                                    <!-- ITEM SUBTOTAL -->
+                                    <span class="cart-item-subtotal">
+                                        ₦{{ item.subtotal|floatformat:2 }}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <!-- ORDER SUMMARY -->
+                <aside class="cart-summary">
+
+                    <div class="summary-header">
+                        <span>Order summary</span>
+                    </div>
+
+
+                    <!-- SUBTOTAL -->
+                    <div class="summary-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            ₦{{ cart.subtotal|floatformat:2 }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- DELIVERY -->
+                    <div class="summary-row">
+
+                        <span>
+                            Delivery
+                        </span>
+
+                        <span>
+                            Calculated at checkout
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-divider"></div>
+
+
+                    <!-- TOTAL -->
+                    <div class="summary-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong>
+                            ₦{{ cart.subtotal|floatformat:2 }}
+                        </strong>
+
+                    </div>
+
+
+                    <!-- CHECKOUT -->
+                    <button
+                        type="button"
+                        class="checkout-button"
+                    >
+                        Proceed to checkout
+                    </button>
+
+                </aside>
+
+            </div>
+
+
+        {% else %}
+
+            <!-- EMPTY CART -->
+            <div class="empty-cart">
+
+                <div class="empty-cart-icon">
+                    🛒
+                </div>
+
+                <h2>
+                    Your cart is empty
+                </h2>
+
+                <p>
+                    You haven't added anything to your cart yet.
+                </p>
+
+                <a
+                    href="/"
+                    class="checkout-button"
+                >
+                    Start shopping
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}
