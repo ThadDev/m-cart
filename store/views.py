@@ -1,18 +1,29 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.db.models import Q
 from .models import Cart, CartItem, Product
 
 
 def product_list(request):
+    query = request.GET.get("q","")
     products = Product.objects.filter(is_active=True)
+    category = request.GET.get("category")
+    if query:
+        products = products.filter(
+            Q(name__icontains=query) |
+            Q(category__icontains=query)
+        )
 
+    if category:
+        products = products.filter(category=category)
     return render(
         request,
         "store/product_list.html",
         {
             "products": products,
+            "query": query,
+            "category": category,
         },
     )
 

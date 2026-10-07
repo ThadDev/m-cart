@@ -36,7 +36,7 @@
             <form
                 class="store-search"
                 method="GET"
-                action=""
+                action="{% url 'product_list' %}"
             >
 
                 <span class="search-icon">
@@ -46,7 +46,7 @@
                 <input
                     type="search"
                     name="q"
-                    value="{{ request.GET.q }}"
+                    value="{{ query|default:'' }}"
                     placeholder="Search products..."
                     aria-label="Search products"
                 >
@@ -92,7 +92,7 @@
 
         <div class="categories-grid">
 
-            <a href="#" class="category-item">
+            <a href="?category=phones" class="category-item">
 
                 <div class="category-icon">
                     📱
@@ -108,7 +108,7 @@
             </a>
 
 
-            <a href="#" class="category-item">
+            <a href="?category=laptops" class="category-item">
 
                 <div class="category-icon">
                     💻
@@ -124,7 +124,7 @@
             </a>
 
 
-            <a href="#" class="category-item">
+            <a href="?category=tablets" class="category-item">
 
                 <div class="category-icon">
                     📟
@@ -140,7 +140,7 @@
             </a>
 
 
-            <a href="#" class="category-item">
+            <a href="?category=fashion" class="category-item">
 
                 <div class="category-icon">
                     👕
@@ -156,7 +156,7 @@
             </a>
 
 
-            <a href="#" class="category-item">
+            <a href="?category=power" class="category-item">
 
                 <div class="category-icon">
                     ⚡

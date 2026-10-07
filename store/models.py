@@ -4,12 +4,25 @@ from django.conf import settings
 
 
 class Product(models.Model):
+    CATEGORY_CHOICES = [
+        ("fashion", "Fashion"),
+        ("power", "Power"),
+        ("phones", "Phones"),
+        ("laptops", "Laptops"),
+        ("tablets", "Tablets"),
+    ]
+
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True, blank=True)
-
+    
     description = models.TextField()
     price = models.DecimalField(max_digits=12, decimal_places=2)
-
+    category = models.CharField(
+        max_length=20,
+        choices=CATEGORY_CHOICES,
+        default="phones",
+        db_index=True,
+    )
     stock = models.PositiveIntegerField(default=0)
 
     image = models.ImageField(
@@ -50,19 +63,17 @@ class Cart(models.Model):
     @property
     def item_count(self):
         return sum(
-        item.quantity
-        for item in self.items.all()
-    )
+            item.quantity
+            for item in self.items.all()
+        )
 
     @property
     def subtotal(self):
         return sum(
-        item.subtotal
-        for item in self.items.select_related("product")
-    )
+            item.subtotal
+            for item in self.items.select_related("product")
+        )
 
-    def __str__(self):
-        return f"{self.user.username}'s cart"
 
 # cart item
 class CartItem(models.Model):
@@ -93,5 +104,6 @@ class CartItem(models.Model):
     @property
     def subtotal(self):
         return self.product.price * self.quantity
+
     def __str__(self):
         return f"{self.product.name} × {self.quantity}"
