@@ -65,6 +65,10 @@ INSTALLED_APPS = [
     # M-Cart apps
     "store",
     "accounts",
+
+     # Cloudinary
+    "cloudinary",
+    "cloudinary_storage"
 ]
 
 
@@ -200,7 +204,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # WhiteNoise compressed static files
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": (
@@ -209,13 +213,6 @@ STORAGES = {
     },
 }
 
-
-# ============================================================
-# MEDIA FILES
-# ============================================================
-
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
 
 
 # ============================================================
@@ -292,3 +289,14 @@ if not DEBUG:
 # ============================================================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# ============================================================
+# CLOUDINARY
+# ============================================================
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
+}
